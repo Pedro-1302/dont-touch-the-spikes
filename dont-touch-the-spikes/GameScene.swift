@@ -8,10 +8,19 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
+    
+    var bird = SKSpriteNode()
     
     override func sceneDidLoad() {
+        self.physicsWorld.contactDelegate = self
 
+        bird = SKSpriteNode(color: .red, size: CGSize(width: 100, height: 100))
+        bird.position = CGPoint(x: 0, y: 0)
+        bird.physicsBody = SKPhysicsBody(rectangleOf: bird.size)
+        bird.physicsBody?.affectedByGravity = true
+        bird.physicsBody?.isDynamic = false
+        addChild(bird)
     }
     
 }
