@@ -24,30 +24,3 @@ class GameOverScene: SKScene {
     }
 }
 
-extension GameOverScene {
-    func getScenePositionY() -> CGFloat {
-        guard let scenePositionY = scene?.position.y else { return 0 }
-        
-        return scenePositionY
-    }
-    
-    func createPlayAgainButton() {
-        playAgainButton = CustomButton(iconName: "", text: "", onButtonPress: replayGame)
-
-        guard let playAgain = playAgainButton else { return }
-        
-        playAgain.position = CGPoint(x: 0, y: -(getScenePositionY() / 2) - 100)
-
-        addChild(playAgain)
-    }
-     
-    func createGameOverLabel() {
-        gameOverLabel = SKLabelNode(text: "You Lose")
-        gameOverLabel.position = CGPoint(x: 0, y: getScenePositionY() / 2)
-        gameOverLabel.fontSize = 100
-        gameOverLabel.fontColor = .white
-
-        addChild(gameOverLabel)
-    }
-}
-
