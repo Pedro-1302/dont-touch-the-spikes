@@ -9,7 +9,6 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    
     var bird = SKSpriteNode()
     var bottomFloor = SKSpriteNode()
     var topRoof = SKSpriteNode()
@@ -17,6 +16,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var leftWall = SKSpriteNode()
     var side = true
     var lose = false
+    var jumpY = 280
+    var jumpX = 80
     
     override func sceneDidLoad() {
         self.physicsWorld.contactDelegate = self
@@ -98,16 +99,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         switch (firstBody.node?.name == "Bird") {
             case secondBody.node?.name == "RightWall":
-                bird.physicsBody?.applyImpulse(CGVector(dx: -100, dy: 340))
+                bird.physicsBody?.applyImpulse(CGVector(dx: -jumpX, dy: jumpY))
                 side = false
             
             case secondBody.node?.name == "LeftWall":
-                bird.physicsBody?.applyImpulse(CGVector(dx: 100, dy: 340))
+                bird.physicsBody?.applyImpulse(CGVector(dx: jumpX, dy: jumpY))
                 side = true
             
             default:
-                bird.physicsBody?.isDynamic = false
-                lose = true
+                scene?.removeAllActions()
+                playerLose()
         }
     }
     
@@ -115,11 +116,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for touch in touches {
             if side && !lose {
                 bird.physicsBody?.isDynamic = true
-                bird.physicsBody?.applyImpulse(CGVector(dx: 100, dy: 340))
+                bird.physicsBody?.applyImpulse(CGVector(dx: jumpX, dy: jumpY))
             } else if !side && !lose {
                 bird.physicsBody?.isDynamic = true
-                bird.physicsBody?.applyImpulse(CGVector(dx: -100, dy: 340))
+                bird.physicsBody?.applyImpulse(CGVector(dx: -jumpX, dy: jumpY))
             }
+        }
+    }
+    
+    func playerLose() {
+        if let view = self.view {
+            let transition = SKTransition.fade(withDuration: 1)
+            let scene = SKScene(fileNamed: "GameOverScene")
+            scene!.scaleMode = .aspectFill
+            view.presentScene(scene!, transition: transition)
         }
     }
 }
