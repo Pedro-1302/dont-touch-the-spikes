@@ -11,16 +11,59 @@ import GameplayKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var bird = SKSpriteNode()
+    var bottomFloor = SKSpriteNode()
+    var topRoof = SKSpriteNode()
+    var rightWall = SKSpriteNode()
+    var leftWall = SKSpriteNode()
     
     override func sceneDidLoad() {
         self.physicsWorld.contactDelegate = self
-
+        
         bird = SKSpriteNode(color: .red, size: CGSize(width: 100, height: 100))
         bird.position = CGPoint(x: 0, y: 0)
         bird.physicsBody = SKPhysicsBody(rectangleOf: bird.size)
         bird.physicsBody?.affectedByGravity = true
         bird.physicsBody?.isDynamic = false
         addChild(bird)
+        
+        bottomFloor = SKSpriteNode(color: .brown, size: CGSize(width: scene!.size.width, height: scene!.size.height / 10 - 40))
+        bottomFloor.position = CGPoint(x: 0, y: -size.height / 2 + bottomFloor.frame.size.height / 2)
+        bottomFloor.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        bottomFloor.physicsBody = SKPhysicsBody(rectangleOf: bottomFloor.size)
+        bottomFloor.physicsBody?.affectedByGravity = true
+        bottomFloor.physicsBody?.isDynamic = false
+        addChild(bottomFloor)
+        
+        topRoof = SKSpriteNode(color: .brown, size: CGSize(width: scene!.size.width, height: scene!.size.height / 10 - 40))
+        topRoof.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        topRoof.position = CGPoint(x: 0, y: size.height / 2 - bottomFloor.frame.size.height / 2 + 20)
+        topRoof.physicsBody = SKPhysicsBody(rectangleOf: topRoof.size)
+        topRoof.physicsBody?.affectedByGravity = false
+        topRoof.physicsBody?.isDynamic = false
+        addChild(topRoof)
+        
+        rightWall = SKSpriteNode(color: .brown, size: CGSize(width: scene!.size.width / 10 + 10, height: scene!.size.height))
+        rightWall.position = CGPoint(x: size.width / 2 - rightWall.frame.size.width / 2 , y: 0)
+        rightWall.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        rightWall.physicsBody = SKPhysicsBody(rectangleOf: rightWall.size)
+        rightWall.physicsBody?.affectedByGravity = true
+        rightWall.physicsBody?.isDynamic = false
+        addChild(rightWall)
+
+        leftWall = SKSpriteNode(color: .brown, size: CGSize(width: scene!.size.width / 10 + 10, height: scene!.size.height))
+        leftWall.position = CGPoint(x: -size.width / 2 + leftWall.frame.size.width / 2 , y: 0)
+        leftWall.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        leftWall.physicsBody = SKPhysicsBody(rectangleOf: leftWall.size)
+        leftWall.physicsBody?.affectedByGravity = true
+        leftWall.physicsBody?.isDynamic = false
+        addChild(leftWall)
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for _ in touches {
+            bird.physicsBody?.isDynamic = true
+            
+            bird.physicsBody?.applyImpulse(CGVector(dx: 100, dy: 50))
+        }
+    }
 }
