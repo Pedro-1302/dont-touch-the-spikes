@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D0C4F9192B3E4AF600BCEB90 /* BitMaskCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C4F9182B3E4AF600BCEB90 /* BitMaskCategories.swift */; };
 		D0D49A132B324B460057A7B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D49A122B324B460057A7B7 /* AppDelegate.swift */; };
 		D0D49A152B324B460057A7B7 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D0D49A142B324B460057A7B7 /* GameScene.sks */; };
 		D0D49A192B324B460057A7B7 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D49A182B324B460057A7B7 /* GameScene.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D0C4F9182B3E4AF600BCEB90 /* BitMaskCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitMaskCategories.swift; sourceTree = "<group>"; };
 		D0D49A0F2B324B460057A7B7 /* dont-touch-the-spikes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "dont-touch-the-spikes.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0D49A122B324B460057A7B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0D49A142B324B460057A7B7 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 				D0D49A1C2B324B460057A7B7 /* Main.storyboard */,
 				D0D49A1F2B324B470057A7B7 /* Assets.xcassets */,
 				D0D49A212B324B470057A7B7 /* LaunchScreen.storyboard */,
+				D0C4F9182B3E4AF600BCEB90 /* BitMaskCategories.swift */,
 			);
 			path = "dont-touch-the-spikes";
 			sourceTree = "<group>";
@@ -143,6 +146,7 @@
 				D0D49A192B324B460057A7B7 /* GameScene.swift in Sources */,
 				D0D49A1B2B324B460057A7B7 /* GameViewController.swift in Sources */,
 				D0D49A132B324B460057A7B7 /* AppDelegate.swift in Sources */,
+				D0C4F9192B3E4AF600BCEB90 /* BitMaskCategories.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

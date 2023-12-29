@@ -15,6 +15,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var topRoof = SKSpriteNode()
     var rightWall = SKSpriteNode()
     var leftWall = SKSpriteNode()
+    var side = true
+    var lose = false
     
     override func sceneDidLoad() {
         self.physicsWorld.contactDelegate = self
@@ -24,6 +26,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bird.physicsBody = SKPhysicsBody(rectangleOf: bird.size)
         bird.physicsBody?.affectedByGravity = true
         bird.physicsBody?.isDynamic = false
+        bird.physicsBody?.categoryBitMask = BitMaskCategories.bird
+        bird.physicsBody?.contactTestBitMask = BitMaskCategories.walls
+        bird.physicsBody?.collisionBitMask = BitMaskCategories.walls
+        bird.name = "Bird"
+        
         addChild(bird)
         
         bottomFloor = SKSpriteNode(color: .brown, size: CGSize(width: scene!.size.width, height: scene!.size.height / 10 - 40))
@@ -32,6 +39,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bottomFloor.physicsBody = SKPhysicsBody(rectangleOf: bottomFloor.size)
         bottomFloor.physicsBody?.affectedByGravity = true
         bottomFloor.physicsBody?.isDynamic = false
+        bottomFloor.physicsBody?.categoryBitMask = BitMaskCategories.walls
+        bottomFloor.physicsBody?.contactTestBitMask = BitMaskCategories.bird
+        bottomFloor.physicsBody?.collisionBitMask = BitMaskCategories.walls
+        
         addChild(bottomFloor)
         
         topRoof = SKSpriteNode(color: .brown, size: CGSize(width: scene!.size.width, height: scene!.size.height / 10 - 40))
@@ -40,6 +51,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         topRoof.physicsBody = SKPhysicsBody(rectangleOf: topRoof.size)
         topRoof.physicsBody?.affectedByGravity = false
         topRoof.physicsBody?.isDynamic = false
+        topRoof.physicsBody?.categoryBitMask = BitMaskCategories.walls
+        topRoof.physicsBody?.contactTestBitMask = BitMaskCategories.bird
+        topRoof.physicsBody?.collisionBitMask = BitMaskCategories.walls
+        
         addChild(topRoof)
         
         rightWall = SKSpriteNode(color: .brown, size: CGSize(width: scene!.size.width / 10 + 10, height: scene!.size.height))
@@ -48,6 +63,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         rightWall.physicsBody = SKPhysicsBody(rectangleOf: rightWall.size)
         rightWall.physicsBody?.affectedByGravity = true
         rightWall.physicsBody?.isDynamic = false
+        rightWall.physicsBody?.categoryBitMask = BitMaskCategories.walls
+        rightWall.physicsBody?.contactTestBitMask = BitMaskCategories.bird
+        rightWall.physicsBody?.collisionBitMask = BitMaskCategories.walls
+        rightWall.name = "RightWall"
+        
         addChild(rightWall)
 
         leftWall = SKSpriteNode(color: .brown, size: CGSize(width: scene!.size.width / 10 + 10, height: scene!.size.height))
@@ -56,14 +76,50 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         leftWall.physicsBody = SKPhysicsBody(rectangleOf: leftWall.size)
         leftWall.physicsBody?.affectedByGravity = true
         leftWall.physicsBody?.isDynamic = false
+        leftWall.physicsBody?.categoryBitMask = BitMaskCategories.walls
+        leftWall.physicsBody?.contactTestBitMask = BitMaskCategories.bird
+        leftWall.physicsBody?.collisionBitMask = BitMaskCategories.walls
+        leftWall.name = "LeftWall"
+        
         addChild(leftWall)
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for _ in touches {
-            bird.physicsBody?.isDynamic = true
+    func didBegin(_ contact: SKPhysicsContact) {
+        var firstBody = SKPhysicsBody()
+        var secondBody = SKPhysicsBody()
+        
+        if contact.bodyA.node?.name == "Bird" {
+            firstBody = contact.bodyA
+            secondBody = contact.bodyB
+        } else {
+            firstBody = contact.bodyB
+            secondBody = contact.bodyA
+        }
+        
+        switch (firstBody.node?.name == "Bird") {
+            case secondBody.node?.name == "RightWall":
+                bird.physicsBody?.applyImpulse(CGVector(dx: -100, dy: 340))
+                side = false
             
-            bird.physicsBody?.applyImpulse(CGVector(dx: 100, dy: 50))
+            case secondBody.node?.name == "LeftWall":
+                bird.physicsBody?.applyImpulse(CGVector(dx: 100, dy: 340))
+                side = true
+            
+            default:
+                bird.physicsBody?.isDynamic = false
+                lose = true
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            if side && !lose {
+                bird.physicsBody?.isDynamic = true
+                bird.physicsBody?.applyImpulse(CGVector(dx: 100, dy: 340))
+            } else if !side && !lose {
+                bird.physicsBody?.isDynamic = true
+                bird.physicsBody?.applyImpulse(CGVector(dx: -100, dy: 340))
+            }
         }
     }
 }
