@@ -10,79 +10,28 @@ import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     var bird = SKSpriteNode()
+    
     var bottomFloor = SKSpriteNode()
     var topRoof = SKSpriteNode()
     var rightWall = SKSpriteNode()
     var leftWall = SKSpriteNode()
     var side = true
     var lose = false
-    var jumpY = 280
-    var jumpX = 80
+    var birdJumpY = 280
+    var birdJumpX = 80
     
     override func sceneDidLoad() {
         self.physicsWorld.contactDelegate = self
-        
-        bird = SKSpriteNode(color: .red, size: CGSize(width: 100, height: 100))
-        bird.position = CGPoint(x: 0, y: 0)
-        bird.physicsBody = SKPhysicsBody(rectangleOf: bird.size)
-        bird.physicsBody?.affectedByGravity = true
-        bird.physicsBody?.isDynamic = false
-        bird.physicsBody?.categoryBitMask = BitMaskCategories.bird
-        bird.physicsBody?.contactTestBitMask = BitMaskCategories.walls
-        bird.physicsBody?.collisionBitMask = BitMaskCategories.walls
-        bird.name = "Bird"
-        
-        addChild(bird)
-        
-        bottomFloor = SKSpriteNode(color: .brown, size: CGSize(width: scene!.size.width, height: scene!.size.height / 10 - 40))
-        bottomFloor.position = CGPoint(x: 0, y: -size.height / 2 + bottomFloor.frame.size.height / 2)
-        bottomFloor.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        bottomFloor.physicsBody = SKPhysicsBody(rectangleOf: bottomFloor.size)
-        bottomFloor.physicsBody?.affectedByGravity = true
-        bottomFloor.physicsBody?.isDynamic = false
-        bottomFloor.physicsBody?.categoryBitMask = BitMaskCategories.walls
-        bottomFloor.physicsBody?.contactTestBitMask = BitMaskCategories.bird
-        bottomFloor.physicsBody?.collisionBitMask = BitMaskCategories.walls
-        
-        addChild(bottomFloor)
-        
-        topRoof = SKSpriteNode(color: .brown, size: CGSize(width: scene!.size.width, height: scene!.size.height / 10 - 40))
-        topRoof.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        topRoof.position = CGPoint(x: 0, y: size.height / 2 - bottomFloor.frame.size.height / 2 + 20)
-        topRoof.physicsBody = SKPhysicsBody(rectangleOf: topRoof.size)
-        topRoof.physicsBody?.affectedByGravity = false
-        topRoof.physicsBody?.isDynamic = false
-        topRoof.physicsBody?.categoryBitMask = BitMaskCategories.walls
-        topRoof.physicsBody?.contactTestBitMask = BitMaskCategories.bird
-        topRoof.physicsBody?.collisionBitMask = BitMaskCategories.walls
-        
-        addChild(topRoof)
-        
-        rightWall = SKSpriteNode(color: .brown, size: CGSize(width: scene!.size.width / 10 + 10, height: scene!.size.height))
-        rightWall.position = CGPoint(x: size.width / 2 - rightWall.frame.size.width / 2 , y: 0)
-        rightWall.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        rightWall.physicsBody = SKPhysicsBody(rectangleOf: rightWall.size)
-        rightWall.physicsBody?.affectedByGravity = true
-        rightWall.physicsBody?.isDynamic = false
-        rightWall.physicsBody?.categoryBitMask = BitMaskCategories.walls
-        rightWall.physicsBody?.contactTestBitMask = BitMaskCategories.bird
-        rightWall.physicsBody?.collisionBitMask = BitMaskCategories.walls
-        rightWall.name = "RightWall"
-        
-        addChild(rightWall)
 
-        leftWall = SKSpriteNode(color: .brown, size: CGSize(width: scene!.size.width / 10 + 10, height: scene!.size.height))
-        leftWall.position = CGPoint(x: -size.width / 2 + leftWall.frame.size.width / 2 , y: 0)
-        leftWall.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        leftWall.physicsBody = SKPhysicsBody(rectangleOf: leftWall.size)
-        leftWall.physicsBody?.affectedByGravity = true
-        leftWall.physicsBody?.isDynamic = false
-        leftWall.physicsBody?.categoryBitMask = BitMaskCategories.walls
-        leftWall.physicsBody?.contactTestBitMask = BitMaskCategories.bird
-        leftWall.physicsBody?.collisionBitMask = BitMaskCategories.walls
-        leftWall.name = "LeftWall"
+        setupBird()
+
+        setupBottomFloor()
         
-        addChild(leftWall)
+        setupTopRoof()
+        
+        setupRightWall()
+        
+        setupLeftWall()
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -99,37 +48,41 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         switch (firstBody.node?.name == "Bird") {
             case secondBody.node?.name == "RightWall":
-                bird.physicsBody?.applyImpulse(CGVector(dx: -jumpX, dy: jumpY))
-                side = false
+                applyImpulse(positiveX: false, positiveY: true)
+                changeSide()
             
             case secondBody.node?.name == "LeftWall":
-                bird.physicsBody?.applyImpulse(CGVector(dx: jumpX, dy: jumpY))
-                side = true
+                applyImpulse(positiveX: true, positiveY: true)
+                changeSide()
             
             default:
                 scene?.removeAllActions()
-                playerLose()
+                runGameOverScene()
         }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard !lose else { return }
+        
         for touch in touches {
-            if side && !lose {
-                bird.physicsBody?.isDynamic = true
-                bird.physicsBody?.applyImpulse(CGVector(dx: jumpX, dy: jumpY))
-            } else if !side && !lose {
-                bird.physicsBody?.isDynamic = true
-                bird.physicsBody?.applyImpulse(CGVector(dx: -jumpX, dy: jumpY))
-            }
+            bird.physicsBody?.isDynamic = true
+            
+            side ? applyImpulse(positiveX: true, positiveY: true) : applyImpulse(positiveX: false, positiveY: true)
         }
     }
     
-    func playerLose() {
+    func applyImpulse(positiveX: Bool, positiveY: Bool) {
+        let impulseDirection = positiveX ? CGVector(dx: birdJumpX, dy: birdJumpY) : CGVector(dx: -birdJumpX, dy: birdJumpY)
+        bird.physicsBody?.applyImpulse(impulseDirection)
+    }
+    
+    func changeSide() {
+        side.toggle()
+    }
+    
+    func runGameOverScene() {
         if let view = self.view {
-            let transition = SKTransition.fade(withDuration: 1)
-            let scene = SKScene(fileNamed: "GameOverScene")
-            scene!.scaleMode = .aspectFill
-            view.presentScene(scene!, transition: transition)
+            ChangeScreen.changeScreen(sceneView: view, screen: "GameOverScene")
         }
     }
 }
