@@ -13,26 +13,13 @@ class GameOverScene: SKScene {
     var playAgainButton: CustomButton?
     
     override func sceneDidLoad() {
-        gameOverLabel = SKLabelNode(text: "You Lose")
-        gameOverLabel.position = CGPoint(x: 0, y: getScenePositionY() / 2)
-        gameOverLabel.fontSize = 100
-        gameOverLabel.fontColor = .white
-        addChild(gameOverLabel)
-        
-        playAgainButton = CustomButton(iconName: "", text: "", onButtonPress: replayGame)
-        
-        let playAgain = getPlayAgainButton()
-        
-        playAgain.position = CGPoint(x: 0, y: -(getScenePositionY() / 2) - 100)
-        addChild(playAgain)
+        createGameOverLabel()
+        createPlayAgainButton()
     }
     
     @objc func replayGame() {
         if let view = self.view {
-            let transition = SKTransition.fade(withDuration: 1)
-            let scene = SKScene(fileNamed: "GameScene")
-            scene!.scaleMode = .aspectFill
-            view.presentScene(scene!, transition: transition)
+            ChangeScreen.changeScreen(sceneView: view, screen: "GameScene")
         }
     }
 }
@@ -44,12 +31,23 @@ extension GameOverScene {
         return scenePositionY
     }
     
-    func getPlayAgainButton() -> SKNode {
-        guard let playAgain = playAgainButton else {
-            return SKSpriteNode()
-        }
+    func createPlayAgainButton() {
+        playAgainButton = CustomButton(iconName: "", text: "", onButtonPress: replayGame)
+
+        guard let playAgain = playAgainButton else { return }
         
-        return playAgain
+        playAgain.position = CGPoint(x: 0, y: -(getScenePositionY() / 2) - 100)
+
+        addChild(playAgain)
+    }
+     
+    func createGameOverLabel() {
+        gameOverLabel = SKLabelNode(text: "You Lose")
+        gameOverLabel.position = CGPoint(x: 0, y: getScenePositionY() / 2)
+        gameOverLabel.fontSize = 100
+        gameOverLabel.fontColor = .white
+
+        addChild(gameOverLabel)
     }
 }
 

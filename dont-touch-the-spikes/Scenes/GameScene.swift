@@ -15,10 +15,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var topRoof = SKSpriteNode()
     var rightWall = SKSpriteNode()
     var leftWall = SKSpriteNode()
+    
+    var birdX = Constants.shared.getBirdJumpX()
+    var birdY = Constants.shared.getBirdJumpY()
+    
     var side = true
     var lose = false
-    var birdJumpY = 280
-    var birdJumpX = 80
     
     override func sceneDidLoad() {
         self.physicsWorld.contactDelegate = self
@@ -72,7 +74,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func applyImpulse(positiveX: Bool, positiveY: Bool) {
-        let impulseDirection = positiveX ? CGVector(dx: birdJumpX, dy: birdJumpY) : CGVector(dx: -birdJumpX, dy: birdJumpY)
+        let impulseDirection = positiveX ? CGVector(dx: birdX, dy: birdY) : CGVector(dx: -birdX, dy: birdY)
         bird.physicsBody?.applyImpulse(impulseDirection)
     }
     
