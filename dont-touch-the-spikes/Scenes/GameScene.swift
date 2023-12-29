@@ -9,24 +9,35 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
+    // Nodes
     var bird = SKSpriteNode()
-    
     var bottomFloor = SKSpriteNode()
     var topRoof = SKSpriteNode()
     var rightWall = SKSpriteNode()
     var leftWall = SKSpriteNode()
     
-    var birdX = Constants.shared.getBirdJumpX()
-    var birdY = Constants.shared.getBirdJumpY()
+    // Declare constants
+    var jumpValueX = 0
+    var jumpValueY = 0
+    var screenWidth = 0.0
+    var screenHeight = 0.0
     
+    // Aux
     var side = true
     var lose = false
     
     override func sceneDidLoad() {
         self.physicsWorld.contactDelegate = self
-
+        
+        Constants.shared.setScene(self)
+        
+        jumpValueX = Constants.shared.getJumpValueX()
+        jumpValueY = Constants.shared.getJumpValueY()
+        screenWidth = Constants.shared.getScreenWidth()
+        screenHeight = Constants.shared.getScreenHeight()
+        
         setupBird()
-
+        
         setupBottomFloor()
         
         setupTopRoof()
@@ -49,17 +60,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         switch (firstBody.node?.name == "Bird") {
-            case secondBody.node?.name == "RightWall":
-                applyImpulse(positiveX: false, positiveY: true)
-                changeSide()
+        case secondBody.node?.name == "RightWall":
+            applyImpulse(positiveX: false, positiveY: true)
+            changeSide()
             
-            case secondBody.node?.name == "LeftWall":
-                applyImpulse(positiveX: true, positiveY: true)
-                changeSide()
+        case secondBody.node?.name == "LeftWall":
+            applyImpulse(positiveX: true, positiveY: true)
+            changeSide()
             
-            default:
-                scene?.removeAllActions()
-                runGameOverScene()
+        default:
+            scene?.removeAllActions()
+            runGameOverScene()
         }
     }
     
@@ -72,9 +83,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             side ? applyImpulse(positiveX: true, positiveY: true) : applyImpulse(positiveX: false, positiveY: true)
         }
     }
-    
+        
     func applyImpulse(positiveX: Bool, positiveY: Bool) {
-        let impulseDirection = positiveX ? CGVector(dx: birdX, dy: birdY) : CGVector(dx: -birdX, dy: birdY)
+        var jumpValX = Double(jumpValueX)
+        var jumpValY = Double(jumpValueY)
+        
+        let impulseDirection = positiveX ? CGVector(dx: jumpValX, dy: jumpValY) : CGVector(dx: -jumpValX, dy: jumpValY)
+        
         bird.physicsBody?.applyImpulse(impulseDirection)
     }
     

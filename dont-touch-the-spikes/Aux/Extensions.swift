@@ -11,7 +11,7 @@ import SpriteKit
 // MARK: GameScene Extension
 extension GameScene {
     func setupBird() {
-        bird = SKSpriteNode(color: .red, size: CGSize(width: 100, height: 100))
+        bird = SKSpriteNode(color: .red, size: CGSize(width: 40, height: 40))
         bird.position = CGPoint(x: 0, y: 0)
         bird.physicsBody = SKPhysicsBody(rectangleOf: bird.size)
         bird.physicsBody?.affectedByGravity = true
@@ -25,7 +25,7 @@ extension GameScene {
     }
     
     func setupBottomFloor() {
-        bottomFloor = SKSpriteNode(color: .brown, size: CGSize(width: scene!.size.width, height: scene!.size.height / 10 - 40))
+        bottomFloor = SKSpriteNode(color: .brown, size: CGSize(width: screenWidth, height: screenHeight / 10 - 40))
         bottomFloor.position = CGPoint(x: 0, y: -size.height / 2 + bottomFloor.frame.size.height / 2)
         bottomFloor.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         bottomFloor.physicsBody = SKPhysicsBody(rectangleOf: bottomFloor.size)
@@ -39,7 +39,7 @@ extension GameScene {
     }
     
     func setupTopRoof() {
-        topRoof = SKSpriteNode(color: .brown, size: CGSize(width: scene!.size.width, height: scene!.size.height / 10 - 40))
+        topRoof = SKSpriteNode(color: .brown, size: CGSize(width: screenWidth, height: screenHeight / 10 - 40))
         topRoof.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         topRoof.position = CGPoint(x: 0, y: size.height / 2 - bottomFloor.frame.size.height / 2 + 20)
         topRoof.physicsBody = SKPhysicsBody(rectangleOf: topRoof.size)
@@ -53,7 +53,7 @@ extension GameScene {
     }
     
     func setupRightWall() {
-        rightWall = SKSpriteNode(color: .brown, size: CGSize(width: scene!.size.width / 10 + 10, height: scene!.size.height))
+        rightWall = SKSpriteNode(color: .brown, size: CGSize(width: screenWidth / 10 + 10, height: screenHeight))
         rightWall.position = CGPoint(x: size.width / 2 - rightWall.frame.size.width / 2 , y: 0)
         rightWall.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         rightWall.physicsBody = SKPhysicsBody(rectangleOf: rightWall.size)
@@ -68,7 +68,7 @@ extension GameScene {
     }
     
     func setupLeftWall() {
-        leftWall = SKSpriteNode(color: .brown, size: CGSize(width: scene!.size.width / 10 + 10, height: scene!.size.height))
+        leftWall = SKSpriteNode(color: .brown, size: CGSize(width: screenWidth / 10 + 10, height: screenHeight))
         leftWall.position = CGPoint(x: -size.width / 2 + leftWall.frame.size.width / 2 , y: 0)
         leftWall.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         leftWall.physicsBody = SKPhysicsBody(rectangleOf: leftWall.size)

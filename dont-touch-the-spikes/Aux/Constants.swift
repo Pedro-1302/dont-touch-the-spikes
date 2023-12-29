@@ -9,18 +9,37 @@ import Foundation
 import SpriteKit
 
 class Constants {
+    // Singleton variable to share Constants
     static let shared = Constants()
 
-    private var birdJumpY = 280.0
-    private var birdJumpX = 80.0
+    // Constants
+    private var birdJumpValueY = 40
+    private var birdJumpValueX = 15
+    private var screenWidth: CGFloat { return scene?.size.width ?? 0 }
+    private var screenHeight: CGFloat { return scene?.size.height ?? 0 }
     
-    func getBirdJumpY() -> CGFloat {
-        return birdJumpY
+    // Getters
+    func getJumpValueY() -> Int {
+        return birdJumpValueY
     }
     
-    func getBirdJumpX()  -> CGFloat {
-        return birdJumpX
+    func getJumpValueX()  -> Int {
+        return birdJumpValueX
+    }
+    
+    func getScreenWidth() -> CGFloat {
+        return screenWidth
+    }
+    
+    func getScreenHeight() -> CGFloat {
+        return screenHeight
     }
 
+    private var scene: SKScene?
+
     private init() {}
+
+    func setScene(_ scene: SKScene) {
+        self.scene = scene
+    }
 }
