@@ -14,7 +14,7 @@ class Constants {
 
     // Constants
     private var birdJumpValueY = 40
-    private var birdJumpValueX = 15
+    private var birdJumpValueX = 25
     private var screenWidth: CGFloat { return scene?.size.width ?? 0 }
     private var screenHeight: CGFloat { return scene?.size.height ?? 0 }
     

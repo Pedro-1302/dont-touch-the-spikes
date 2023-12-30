@@ -11,6 +11,7 @@ import GameplayKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
     // Nodes
     var bird = SKSpriteNode()
+    var spike = SKSpriteNode() 
     var bottomFloor = SKSpriteNode()
     var topRoof = SKSpriteNode()
     var rightWall = SKSpriteNode()
@@ -35,7 +36,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         jumpValueY = Constants.shared.getJumpValueY()
         screenWidth = Constants.shared.getScreenWidth()
         screenHeight = Constants.shared.getScreenHeight()
-        
+       
         setupBird()
         
         setupBottomFloor()
@@ -45,6 +46,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         setupRightWall()
         
         setupLeftWall()
+        
+        setupSpike()
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -79,7 +82,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         for touch in touches {
             bird.physicsBody?.isDynamic = true
-            
             side ? applyImpulse(positiveX: true, positiveY: true) : applyImpulse(positiveX: false, positiveY: true)
         }
     }
@@ -87,6 +89,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func applyImpulse(positiveX: Bool, positiveY: Bool) {
         var jumpValX = Double(jumpValueX)
         var jumpValY = Double(jumpValueY)
+        
+        bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
         
         let impulseDirection = positiveX ? CGVector(dx: jumpValX, dy: jumpValY) : CGVector(dx: -jumpValX, dy: jumpValY)
         
