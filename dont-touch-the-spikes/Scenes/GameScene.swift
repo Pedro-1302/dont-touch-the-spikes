@@ -46,8 +46,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         setupRightWall()
         
         setupLeftWall()
-        
-        setupSpike()
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -83,6 +81,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for touch in touches {
             bird.physicsBody?.isDynamic = true
             side ? applyImpulse(positiveX: true, positiveY: true) : applyImpulse(positiveX: false, positiveY: true)
+            setupSpike()
         }
     }
         

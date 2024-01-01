@@ -11,18 +11,18 @@ import SpriteKit
 // MARK: GameScene Extension
 extension GameScene {
     func setupSpike() {
-        let randomNumber = [-100, -40, -20, -1, 0, 1, 20, 40, 100]
-        let number = randomNumber.randomElement() ?? 0
+        let randomNumber = [1, 20, 40, 100]
+        let randomSignal = [-1, 1]
+        var number = (randomNumber.randomElement() ?? 0) * (randomSignal.randomElement() ?? 1)
+                
         spike = SKSpriteNode(color: .blue, size: CGSize(width: 50, height: 50))
 
-        if number % 2 == 0 {
+        if number > 0 {
             spike.position = CGPoint(x: rightWall.frame.minX - spike.size.width / 2, y: CGFloat(number))
         } else {
             spike.position = CGPoint(x: leftWall.frame.maxX + spike.size.width / 2, y: CGFloat(number))
         }
-       
-        spike.zPosition = 100
-        
+  
         addChild(spike)
     }
     
@@ -41,7 +41,12 @@ extension GameScene {
     }
     
     func setupBottomFloor() {
-        bottomFloor = SKSpriteNode(color: .brown, size: CGSize(width: screenWidth, height: screenHeight / 10))
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            bottomFloor = SKSpriteNode(color: .brown, size: CGSize(width: screenWidth, height: screenHeight / 6))
+        } else {
+            bottomFloor = SKSpriteNode(color: .brown, size: CGSize(width: screenWidth, height: screenHeight / 10))
+        }
+            
         bottomFloor.position = CGPoint(x: 0, y: -size.height / 2 + bottomFloor.frame.size.height / 2)
         bottomFloor.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         bottomFloor.physicsBody = SKPhysicsBody(rectangleOf: bottomFloor.size)
@@ -55,9 +60,14 @@ extension GameScene {
     }
     
     func setupTopRoof() {
-        topRoof = SKSpriteNode(color: .brown, size: CGSize(width: screenWidth, height: screenHeight / 10))
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            topRoof = SKSpriteNode(color: .brown, size: CGSize(width: screenWidth, height: screenHeight / 6))
+        } else {
+            topRoof = SKSpriteNode(color: .brown, size: CGSize(width: screenWidth, height: screenHeight / 10))
+        }
+        
         topRoof.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        topRoof.position = CGPoint(x: 0, y: size.height / 2 - bottomFloor.frame.size.height / 2)
+        topRoof.position = CGPoint(x: 0, y: size.height / 2 - topRoof.frame.size.height / 2)
         topRoof.physicsBody = SKPhysicsBody(rectangleOf: topRoof.size)
         topRoof.physicsBody?.affectedByGravity = false
         topRoof.physicsBody?.isDynamic = false
@@ -69,8 +79,8 @@ extension GameScene {
     }
     
     func setupRightWall() {
-        rightWall = SKSpriteNode(color: .brown, size: CGSize(width: screenWidth / 10, height: screenHeight))
-        rightWall.position = CGPoint(x: size.width / 2 - rightWall.frame.size.width / 2, y: 0)
+        rightWall = SKSpriteNode(color: .brown, size: CGSize(width: screenWidth / 12, height: screenHeight))
+        rightWall.position = CGPoint(x: (size.width / 2 - rightWall.frame.size.width / 2), y: 0)
         rightWall.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         rightWall.physicsBody = SKPhysicsBody(rectangleOf: rightWall.size)
         rightWall.physicsBody?.affectedByGravity = true
@@ -84,8 +94,8 @@ extension GameScene {
     }
     
     func setupLeftWall() {
-        leftWall = SKSpriteNode(color: .brown, size: CGSize(width: screenWidth / 10, height: screenHeight))
-        leftWall.position = CGPoint(x: -size.width / 2 + leftWall.frame.size.width / 2 , y: 0)
+        leftWall = SKSpriteNode(color: .brown, size: CGSize(width: screenWidth / 12, height: screenHeight))
+        leftWall.position = CGPoint(x: (-size.width / 2 + leftWall.frame.size.width / 2), y: 0)
         leftWall.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         leftWall.physicsBody = SKPhysicsBody(rectangleOf: leftWall.size)
         leftWall.physicsBody?.affectedByGravity = true
