@@ -11,19 +11,48 @@ import SpriteKit
 // MARK: GameScene Extension
 extension GameScene {
     func setupSpike() {
-        let randomNumber = [1, 20, 40, 100]
-        let randomSignal = [-1, 1]
-        var number = (randomNumber.randomElement() ?? 0) * (randomSignal.randomElement() ?? 1)
-                
-        spike = SKSpriteNode(color: .blue, size: CGSize(width: 50, height: 50))
+        // h / q
+        spike1 = SKSpriteNode(color: .blue, size: CGSize(width: 50, height: 50))
+        spike2 = SKSpriteNode(color: .red, size: CGSize(width: 50, height: 50))
+        spike3 = SKSpriteNode(color: .green, size: CGSize(width: 50, height: 50))
+        spike4 = SKSpriteNode(color: .gray, size: CGSize(width: 50, height: 50))
+        spike5 = SKSpriteNode(color: .purple, size: CGSize(width: 50, height: 50))
+        spike6 = SKSpriteNode(color: .cyan, size: CGSize(width: 50, height: 50))
+        spike7 = SKSpriteNode(color: .magenta, size: CGSize(width: 50, height: 50))
+        spike8 = SKSpriteNode(color: .red, size: CGSize(width: 50, height: 50))
+        spike9 = SKSpriteNode(color: .green, size: CGSize(width: 50, height: 50))
+        spike10 = SKSpriteNode(color: .red, size: CGSize(width: 50, height: 50))
+        spike11 = SKSpriteNode(color: .black, size: CGSize(width: 50, height: 50))
+        spike12 = SKSpriteNode(color: .magenta, size: CGSize(width: 50, height: 50))
 
-        if number > 0 {
-            spike.position = CGPoint(x: rightWall.frame.minX - spike.size.width / 2, y: CGFloat(number))
-        } else {
-            spike.position = CGPoint(x: leftWall.frame.maxX + spike.size.width / 2, y: CGFloat(number))
-        }
-  
-        addChild(spike)
+        spike1.position = CGPoint(x: rightWall.frame.minX - spike1.size.width / 2, y: CGFloat(bottomFloor.frame.maxY + spike1.frame.width / 2 + 50))
+        spike2.position = CGPoint(x: rightWall.frame.minX - spike2.size.width / 2, y: CGFloat(spike1.frame.maxY + spike1.frame.height / 2 + 50))
+        spike3.position = CGPoint(x: rightWall.frame.minX - spike3.size.width / 2, y: CGFloat(spike2.frame.maxY + spike2.frame.height / 2 + 50))
+        spike4.position = CGPoint(x: rightWall.frame.minX - spike4.size.width / 2, y: CGFloat(spike3.frame.maxY + spike3.frame.height / 2 + 50))
+        spike5.position = CGPoint(x: rightWall.frame.minX - spike5.size.width / 2, y: CGFloat(spike4.frame.maxY + spike4.frame.width / 2 + 50))
+        spike6.position = CGPoint(x: rightWall.frame.minX - spike6.size.width / 2, y: CGFloat(spike5.frame.maxY + spike5.frame.height / 2 + 50))
+        spike7.position = CGPoint(x: rightWall.frame.minX - spike7.size.width / 2, y: CGFloat(spike6.frame.maxY + spike6.frame.height / 2 + 50))
+        spike8.position = CGPoint(x: rightWall.frame.minX - spike8.size.width / 2, y: CGFloat(spike7.frame.maxY + spike7.frame.height / 2 + 50))
+        
+        spike9.position = CGPoint(x: rightWall.frame.minX - spike9.size.width / 2, y: CGFloat(spike8.frame.maxY + spike8.frame.height / 2 + 50))
+        
+        spike10.position = CGPoint(x: rightWall.frame.minX - spike10.size.width / 2, y: CGFloat(spike9.frame.maxY + spike9.frame.height / 2 + 50))
+        
+        spike11.position = CGPoint(x: rightWall.frame.minX - spike11.size.width / 2, y: CGFloat(spike10.frame.maxY + spike10.frame.height / 2 + 50))
+        spike12.position = CGPoint(x: rightWall.frame.minX - spike12.size.width / 2, y: CGFloat(spike11.frame.maxY + spike11.frame.height / 2 + 50))
+
+        addChild(spike1)
+        addChild(spike2)
+        addChild(spike3)
+        addChild(spike4)
+        addChild(spike5)
+        addChild(spike6)
+        addChild(spike7)
+        addChild(spike8)
+        addChild(spike9)
+        addChild(spike10)
+        addChild(spike11)
+        addChild(spike12)
     }
     
     func setupBird() {

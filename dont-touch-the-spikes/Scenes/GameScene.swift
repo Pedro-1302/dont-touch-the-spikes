@@ -11,7 +11,19 @@ import GameplayKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
     // Nodes
     var bird = SKSpriteNode()
-    var spike = SKSpriteNode() 
+    var spike1 = SKSpriteNode()
+    var spike2 = SKSpriteNode() 
+    var spike3 = SKSpriteNode()
+    var spike4 = SKSpriteNode()
+    var spike5 = SKSpriteNode()
+    var spike6 = SKSpriteNode()
+    var spike7 = SKSpriteNode()
+    var spike8 = SKSpriteNode() 
+    var spike9 = SKSpriteNode()
+    var spike10 = SKSpriteNode()
+    var spike11 = SKSpriteNode()
+    var spike12 = SKSpriteNode()
+    
     var bottomFloor = SKSpriteNode()
     var topRoof = SKSpriteNode()
     var rightWall = SKSpriteNode()
@@ -46,6 +58,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         setupRightWall()
         
         setupLeftWall()
+        
+        setupSpike()
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -81,7 +95,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for touch in touches {
             bird.physicsBody?.isDynamic = true
             side ? applyImpulse(positiveX: true, positiveY: true) : applyImpulse(positiveX: false, positiveY: true)
-            setupSpike()
         }
     }
         
